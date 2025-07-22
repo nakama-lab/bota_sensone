@@ -1,0 +1,35 @@
+services:
+  ethercat_senseone_container:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: Senseone_eth
+
+    network_mode: "host"
+    ipc: "host"
+    # pid: "host"
+    privileged: true
+    tty: true
+    stdin_open: true
+
+    volumes:
+      # Allow graphical programs in the container
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority
+      # Shared memory (to allow communication with other ROS processes on host PC)
+      - /dev/shm:/dev/shm
+    
+    environment:
+      # Allow graphical programs in the container
+      QT_X11_NO_MITSHM: 1
+      DISPLAY: $DISPLAY
+      # Allow colorized console output
+      RCUTILS_COLORIZED_OUTPUT: 1
+      # Other variables (can be overridden in other compose files)
+      ROS_DOMAIN_ID: ${ROS_DOMAIN_ID:-40}
+      # RMW_IMPLEMENTATION: "rmw_cyclonedds_cpp"
+
+    command: bash -c "source /opt/ros/humble/setup.bash && cd /ros2_ws && source install/setup.bash  && ros2 run bota_ethercat bota_ethercat_node --ros-args -p eth_interface_name:=enx00808c8e2690 -p sinc_length:=64"
+
+
+
