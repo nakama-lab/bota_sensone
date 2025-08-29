@@ -29,7 +29,7 @@ services:
       ROS_DOMAIN_ID: ${ROS_DOMAIN_ID:-40}
       # RMW_IMPLEMENTATION: "rmw_cyclonedds_cpp"
 
-    command: bash -c "source /opt/ros/humble/setup.bash && cd /ros2_ws && source install/setup.bash  && ros2 run bota_ethercat bota_ethercat_node --ros-args -p eth_interface_name:=enx00808c8e2690 -p sinc_length:=64"
+    command: bash -c "echo "here" && source /opt/ros/humble/setup.bash && colcon build --symlink-install && cd /ros2_ws && source install/setup.bash  && ros2 run bota_ethercat bota_ethercat --ros-args -p eth_interface_name:=enp46s0 -p sinc_length:=64"
 
 
 
